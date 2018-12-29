@@ -98,7 +98,6 @@ try{
 			'		[host]=URL.properties.host.get.call(Me)',
 			'	End Property',
 			'	Public Property Let [origin](var)',
-			'		Call URL.properties.origin.set.call(Me,var)',
 			'	End Property',
 			'	Public Property Get [origin]',
 			'		[origin]=URL.properties.origin.get.call(Me)',
