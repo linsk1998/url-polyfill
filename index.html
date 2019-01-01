@@ -42,12 +42,14 @@
 	<div class="btn-toolbar">
 		<button class="btn btn-primary" type="button" onclick="printURL(this)">new URL("URL.js",location)</button>
 	</div>
+	<pre id="result"></pre>
 	<h3>属性可以设置</h3>
 	<div class="btn-toolbar">
-		<button class="btn btn-primary" type="button" onClick="alert(url.href)">alert(url.href)</button>
-		<button class="btn btn-primary" type="button" onClick="alert(url.pathname)">alert(url.pathname)</button>
+		<button class="btn btn-primary" type="button" onClick="document.getElementById('result2').innerHTML=(url.href)">url.href</button>
+		<button class="btn btn-primary" type="button" onClick="document.getElementById('result2').innerHTML=(url.pathname)">url.pathname</button>
 		<button class="btn btn-primary" type="button" onClick="url.pathname='/qweea/asdsa.aasd'">url.pathname='/qweea/asdsa.aasd'</button>
 	</div>
+	<pre id="result2"></pre>
 </div>
 <script type="text/javascript">
 	var url;
@@ -58,7 +60,7 @@
 		for(var key in url){
 			a.push(key+":"+url[key]);
 		}
-		alert(a.join("\n"));
+		document.getElementById("result").innerHTML=a.join("<br/>");
 	}
 </script>
 </body>
