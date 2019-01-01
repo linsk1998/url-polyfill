@@ -1,6 +1,8 @@
 # URL-polyfill
 
-我这里有两个版本
+为不支持URL和URLSearchParams的浏览器提供支持
+
+如果浏览器支持URL，但是不支持searchParams或者origin，这提供这些属性的支持
 
 # 优点
 
