@@ -69,33 +69,3 @@ if(!Array.prototype.find){
 		}
 	};
 }
-if(!Array.prototype.findIndex){
-	Array.prototype.findIndex = function(callback, thisArg) {
-		for(var i=0,j; i<this.length; i++){
-			j=this[i];
-			var r=callback.call(thisArg,j,i,this);
-			if(r){
-				return i;
-			}
-		}
-		return -1;
-	};
-}
-(function(){
-	function Iterator(arr){
-		this.array=arr;
-		this.i=0;
-	}
-	Iterator.prototype.next=function(){
-		var result={};
-		result.done=this.array.length<=this.i;
-		result.value=this.array[this.i];
-		if(!result.done){
-			this.i++;
-		}
-		return result;
-	};
-	Array.prototype.entries=function(){
-		return new Iterator(this);
-	};
-})();
