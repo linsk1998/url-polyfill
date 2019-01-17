@@ -1,77 +1,4 @@
-var URLSearchParams,URL;
-if(!this.URLSearchParams){
-	URLSearchParams=function(paramsString){
-		this._data=new Array();
-		if(paramsString){
-			var i,pair;
-			if(Array.isArray(paramsString)){
-				i=this._data.length=paramsString.length;
-				while(i-->0){
-					pair=paramsString[i];
-					this._data[i]=new Array(pairs[1],pairs[0]);
-				}
-			}else{
-				var pairs=paramsString.split("&");
-				i=this._data.length=pairs.length;
-				while(i-->0){
-					pair=pairs[i];
-					var id=pair.indexOf("=");
-					this._data[i]=new Array(pair.substring(id+1,pair.length),pair.substring(0,id));
-				}
-			}
-		}
-	};
-	URLSearchParams.prototype.append=function(key,value){
-		this._data.push([key,value]);
-	};
-	URLSearchParams.prototype.get=function(key){
-		var item=this._data.find(function(item){
-			return item[1]==key;
-		});
-		if(item) return item[0];
-		return null;
-	};
-	URLSearchParams.prototype.getAll=function(key){
-		return this._data.filter(function(item){
-			return item[1]==key;
-		}).map(function(item){
-			return item[0];
-		});
-	};
-	URLSearchParams.prototype.set=function(key,value){
-		var item=this._data.find(function(item){
-			return item[1]==key;
-		});
-		if(item){
-			item[0]=value;
-		}else{
-			this.append(key,value);
-		}
-	};
-	URLSearchParams.prototype['delete']=function(key){
-		this._data=this._data.filter(function(item){
-			return item[1]!=key;
-		});
-	};
-	URLSearchParams.prototype.has=function(key){
-		return this._data.some(function(item){
-			return item[1]==key;
-		});
-	};
-	URLSearchParams.prototype.toString=function(){
-		return this._data.map(function(item){
-			return encodeURIComponent(item[1])+"="+encodeURIComponent(item[0]);
-		}).join("&");
-	};
-	URLSearchParams.prototype.sort=function(){
-		return this._data.sort(function(a,b){
-			return a[1] > b[1];
-		});
-	};
-	URLSearchParams.prototype.forEach=function(fn,thisArg){
-		this._data.forEach.apply(this._data,arguments);
-	};
-}
+var URL;
 (function(window){
 	var SearchParams=function(url){
 		this._url=url;
@@ -103,6 +30,7 @@ if(!this.URLSearchParams){
 			}
 			me.protocol=me.hostname=me.pathname=null;
 			me.port=me.search=me.hash=me.username=me.password="";
+			me.searchParams=new SearchParams(me);
 			var pattern=/^[a-zA-Z]+:/;
 			if(arr=relativePath.match(pattern)){
 				me.protocol=arr[0];
@@ -221,44 +149,6 @@ if(!this.URLSearchParams){
 				this.username=url.username;
 				this.password=url.password;
 			}
-		},
-		search:{
-			enumerable:true,
-			get:function(){
-				if(this.searchParams){
-					var search=this.searchParams.toString();
-					if(search){
-						return "?"+search;
-					}
-				}
-				return "";
-			},
-			set:function(value){
-				if(this.searchParams){
-					var search=this.searchParams.toString();
-					var keys=[];
-					var pairs=search.split("&");
-					var i=pairs.length;
-					while(i-->0){
-						var pair=pairs[i];
-						var id=pair.indexOf("=");
-						var key=pair.substring(0,id);
-						this.searchParams['delete'](key);
-					}
-					search=value.replace(/^\?/,"");
-					if(search){
-						pairs=search.split("&");
-						i=pairs.length;
-						while(i-->0){
-							var pair=pairs[i];
-							var id=pair.indexOf("=");
-							this.searchParams.append(pair.substring(id+1,pair.length),pair.substring(0,id));
-						}
-					}
-				}else{
-					this.searchParams=new URLSearchParams(value.replace(/^\?/,""));
-				}
-			}
 		}
 	};
 	if(Object.defineProperties){
@@ -289,6 +179,7 @@ if(!this.URLSearchParams){
 			'	Public [hostname]',
 			'	Public [pathname]',
 			'	Public [port]',
+			'	Public [search]',
 			'	Public [searchParams]',
 			'	Public [hash]',
 			'	Public [username]',
@@ -309,12 +200,6 @@ if(!this.URLSearchParams){
 			'	End Property',
 			'	Public Property Get [href]',
 			'		[href]=URL.properties.href.get.call(Me)',
-			'	End Property',
-			'	Public Property Let [search](var)',
-			'		Call URL.properties.search.set.call(Me,var)',
-			'	End Property',
-			'	Public Property Get [search]',
-			'		[search]=URL.properties.search.get.call(Me)',
 			'	End Property',
 			'End Class',
 			'Function VBUrlFactory()',
